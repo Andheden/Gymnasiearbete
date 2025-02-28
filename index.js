@@ -1,4 +1,5 @@
 const express = require("express");
+const session = require('express-session')
 
 
 const app = express();
@@ -11,11 +12,21 @@ const { Server } = require("socket.io")
 const httpServer = createServer(app)
 const io = new Server(httpServer)
 
+app.set('trust proxy', 1)
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
+
 
 httpServer.listen(3000, _=>console.log("port 3000"));
 app.use(express.static("public"));
 
 
+
+io.engine.use(sessionMw);
 io.on("connection", (socket) => {
     console.log("new connection...");
 
