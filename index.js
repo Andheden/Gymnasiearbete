@@ -13,7 +13,7 @@ const httpServer = createServer(app)
 const io = new Server(httpServer)
 
 app.set('trust proxy', 1)
-app.use(session({
+const sessionMw = (session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
