@@ -12,7 +12,6 @@ const { Server } = require("socket.io")
 const httpServer = createServer(app)
 const io = new Server(httpServer)
 
-app.set('trust proxy', 1)
 const sessionMw = (session({
   secret: 'keyboard cat',
   resave: false,
@@ -38,11 +37,16 @@ io.on("connection", (socket) => {
         io.emit("message", "A user has left the chat")
     })
     
+    socket.on("chatMessage", (msg) => {
+        io.emit("message", msg)
+    })
+
 });
 
 
 
 
 app.get("/", (req, res) => {
-    res.sendFile(__dirname + "/public/chat.html")
-})
+    res.sendFile(__dirname + "/chat.html")
+
+});

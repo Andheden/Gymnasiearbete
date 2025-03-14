@@ -5,6 +5,7 @@ const socket = io();
 
 socket.on("message", message => {
     console.log(message)
+    outputMessage(message)
 });
 
 chatForm.addEventListener("submit", e => {
@@ -12,5 +13,9 @@ chatForm.addEventListener("submit", e => {
 
     const msg = e.target.elements.msg.value;
 
-    console.log(msg);
+    socket.emit("chatMessage", msg);
 })
+
+function outputMessage (message) {
+    const div = document.createElement("div")
+}
