@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
     socket.emit("message", "welcome to the chat");
 
     io.emit("message", "a user has joined the chat")
-
+<
     socket.on("disconnect", () => {
         io.emit("message", "A user has left the chat")
     })

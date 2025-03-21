@@ -1,0 +1,20 @@
+.message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+  
+  .message .meta {
+    font-size: 0.9rem;
+    color: gray;
+    margin-right: 10px;
+    white-space: nowrap;
+  }
+  
+  .message .text {
+    background-color: #f1f1f1;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 70%;
+    word-wrap: break-word;
+  }
