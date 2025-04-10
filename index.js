@@ -1,5 +1,7 @@
 const express = require("express");
 const session = require('express-session');
+const fs = require("fs");
+
 
 
 const app = express();
@@ -36,7 +38,7 @@ io.on("connection", (socket) => {
     io.emit("message", { user: "System", msg: "A user has joined the chat" });
     
         socket.on("disconnect", () => {
-            io.emit("message", "A user has left the chat");
+            io.emit("message", { user: "syste", msg: "A user has left the chat"});
         })
 
     socket.on("chatMessage", (msg) => {
