@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require('express-session');
 const fs = require("fs");
+const path = require("path");
 
 
 
@@ -33,24 +34,45 @@ io.engine.use(sessionMw);
 io.on("connection", (socket) => {
     console.log("new connection...");
 
+
     socket.emit("message", { user: "System", msg: "Welcome to the chat" });
 
-    io.emit("message", { user: "System", msg: "A user has joined the chat" });
-    
-        socket.on("disconnect", () => {
-            io.emit("message", { user: "syste", msg: "A user has left the chat"});
-        })
 
-    socket.on("chatMessage", (msg) => {
+    socket.on("joinRoom", (room) => {
+        socket.join(room);
+        console.log(`User joined room: ${room}`);
+        socket.emit("message", { user: "System", msg: `You have joined ${room}` });
+        socket.to(room).emit("message", { user: "System", msg: `${socket.request.session.user} has joined the room` });
+    });
 
-        if (socket.request.session.user) {
 
-            let user = socket.request.session.user;
+    socket.on("chatMessage", ({ room, msg }) => {
+        const user = socket.request.session.user;
+        const messageData = { user, msg, room, timestamp: new Date().toISOString() };
 
-            io.emit("message", { user, msg });
-        }
-    })
-    console.log(socket.request.session);
+
+        io.to(room).emit("message", { user, msg });
+
+        const filePath = path.join(__dirname, "chatHistory.json");
+        fs.readFile(filePath, "utf8", (err, data) => {
+            let chatHistory = [];
+            if (!err && data) {
+                chatHistory = JSON.parse(data);
+            }
+            chatHistory.push(messageData);
+            fs.writeFile(filePath, JSON.stringify(chatHistory, null, 2), (err) => {
+                if (err) {
+                    console.error(err);
+                }
+            });
+        });
+
+    });
+
+
+    socket.on("disconnect", () => {
+        console.log("A user disconnected");
+    });
 });
 
 
@@ -67,5 +89,5 @@ app.get("/", (req, res) => {
 
 app.get("/login/:user", (req, res) => {
     req.session.user = req.params.user;
-    res.redirect("/?logged_in");
+    res.redirect("/");
 });

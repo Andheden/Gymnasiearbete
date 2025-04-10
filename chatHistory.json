@@ -1,0 +1,20 @@
+[
+  {
+    "user": "hej",
+    "msg": "hej",
+    "room": "hej",
+    "timestamp": "2025-04-10T20:04:01.830Z"
+  },
+  {
+    "user": "hej",
+    "msg": "Vad heter du?",
+    "room": "hej",
+    "timestamp": "2025-04-10T20:04:06.991Z"
+  },
+  {
+    "user": "hej",
+    "msg": "hej",
+    "room": "geh",
+    "timestamp": "2025-04-10T23:00:54.005Z"
+  }
+]

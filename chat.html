@@ -12,23 +12,20 @@
 
 <body>
   <main>
+    <div id="messageContainer">
+      <div id="chatMessages"></div>
 
-  
-  <div id="messageContainer">
-    
-    <div id="chatMessages"></div>
+      <form id="chatForm">
+        <label for="msg">Message</label>
+        <input id="msg" type="text" placeholder="Enter Message" required autocomplete="off" />
+        <button class="btn"><i class="sendMsgBtn"></i> Send</button>
 
-    <form id="chatForm">
-      <input id="msg"
-       type="text"
-        placeholder="Enter Message"
-         required
-          autocomplete="off"
-           />
-      <button class="btn"><i class="sendMsgBtn"></i> Send</button>
-
-    </form>
-  </div>
+        <label for="roomInput">Room</label>
+        <input type="text" id="roomInput" placeholder="Enter room name" />
+        <button id="joinRoomBtn" type="button">Join</button>
+      </form>
+    </div>
+  </main>
 </body>
 
 </html>

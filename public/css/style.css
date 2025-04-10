@@ -1,20 +1,51 @@
 .message {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 10px;
-  }
-  
-  .message .meta {
-    font-size: 0.9rem;
-    color: gray;
-    margin-right: 10px;
-    white-space: nowrap;
-  }
-  
-  .message .text {
-    background-color: #f1f1f1;
-    padding: 10px;
-    border-radius: 5px;
-    max-width: 70%;
-    word-wrap: break-word;
-  }
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.message .meta {
+  font-size: 0.9rem;
+  color: gray;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.message .text {
+  background-color: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+#chatForm {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 10px;
+}
+
+#msg, #roomInput {
+  width: 100%; 
+  max-width: 300px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#chatForm button {
+  width: 100%; 
+  max-width: 300px; 
+  padding: 10px;
+  border: none;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#chatForm button:hover {
+  background-color: #0056b3;
+}
