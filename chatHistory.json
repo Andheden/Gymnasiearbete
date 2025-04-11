@@ -1,20 +1,42 @@
 [
   {
-    "user": "hej",
-    "msg": "hej",
+    "user": "axel",
+    "userId": "id_1744372648097",
+    "msg": "hej alla barn",
+    "msgId": 1744373440745,
     "room": "hej",
-    "timestamp": "2025-04-10T20:04:01.830Z"
+    "timestamp": "2025-04-11T12:10:40.745Z"
+  },
+  {
+    "user": "axel",
+    "userId": "id_1744372648097",
+    "msg": "hej",
+    "msgId": 1744374163761,
+    "room": "h",
+    "timestamp": "2025-04-11T12:22:43.761Z"
+  },
+  {
+    "user": "axel",
+    "userId": "id_1744372648097",
+    "msg": "hej",
+    "msgId": 1744374248514,
+    "room": "h",
+    "timestamp": "2025-04-11T12:24:08.514Z"
+  },
+  {
+    "user": "axel",
+    "userId": "id_1744372648097",
+    "msg": "hej",
+    "msgId": 1744374263402,
+    "room": "h",
+    "timestamp": "2025-04-11T12:24:23.402Z"
   },
   {
     "user": "hej",
-    "msg": "Vad heter du?",
-    "room": "hej",
-    "timestamp": "2025-04-10T20:04:06.991Z"
-  },
-  {
-    "user": "hej",
+    "userId": "id_1744374292314",
     "msg": "hej",
-    "room": "geh",
-    "timestamp": "2025-04-10T23:00:54.005Z"
+    "msgId": 1744374308211,
+    "room": "h",
+    "timestamp": "2025-04-11T12:25:08.211Z"
   }
 ]

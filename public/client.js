@@ -2,6 +2,7 @@ const chatForm = document.getElementById("chatForm");
 const chatMessages = document.querySelector("#chatMessages");
 const joinRoomBtn = document.getElementById("joinRoomBtn");
 const roomInput = document.getElementById("roomInput");
+const deleteBtn = document.querySelector(".deleteBtn");
 
 const socket = io();
 
@@ -40,13 +41,31 @@ chatForm.addEventListener("submit", e => {
 
 })
 
-function outputMessage (user, message) {
-    const div = document.createElement("div")
-    div.classList.add("message")
-    div.innerHTML = `<p class="meta">${user} <span>${new Date().toLocaleTimeString()}</span></p>
-        <p class="text">${message}</p>`;
+function outputMessage(user, message) {
+    const div = document.createElement("div");
+    div.classList.add("message");
+    div.dataset.msgId = message.msgId;
 
-        document.getElementById("chatMessages").appendChild(div);
-    
-        
+    div.innerHTML = `<p class="meta">${user} <span>${new Date().toLocaleTimeString()}</span></p>
+        <p class="text">${message}</p> <button class="deleteBtn">Delete</button>`;
+
+    document.getElementById("chatMessages").appendChild(div);
 }
+document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("deleteBtn")) {
+        const messageDiv = e.target.closest(".message");
+        const msgId = messageDiv.dataset.msgId;
+
+        socket.emit("deleteMessage", { msgId });
+
+       
+        messageDiv.remove();
+    }
+});
+
+socket.on("deleteMessage", (msgId) => {
+    const messageDiv = document.querySelector(`.message[data-msg-id="${msgId}"]`);
+    if (messageDiv) {
+        messageDiv.remove();
+    }
+});
