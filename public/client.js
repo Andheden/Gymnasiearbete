@@ -9,8 +9,8 @@ const socket = io();
 let currentRoom = "";
 
 
-socket.on("message", ({ user, msg }) => {
-    outputMessage(user, msg)
+socket.on("message", (messageData) => {
+    outputMessage(messageData); 
 });
 
 joinRoomBtn.addEventListener("click", () => {
@@ -41,31 +41,41 @@ chatForm.addEventListener("submit", e => {
 
 })
 
-function outputMessage(user, message) {
+function outputMessage(message) {
     const div = document.createElement("div");
     div.classList.add("message");
     div.dataset.msgId = message.msgId;
 
-    div.innerHTML = `<p class="meta">${user} <span>${new Date().toLocaleTimeString()}</span></p>
-        <p class="text">${message}</p> <button class="deleteBtn">Delete</button>`;
+   
+    const isOwnMessage = message.userId === socket.id;
+
+    div.innerHTML = `<p class="meta">${message.user} <span>${new Date().toLocaleTimeString()}</span></p>
+        <p class="text">${message.msg}</p>
+        ${isOwnMessage ? '<button class="deleteBtn">Delete</button>' : ''}`;
 
     document.getElementById("chatMessages").appendChild(div);
 }
+
+
+socket.on("deleteMessage", (msgId) => {
+   
+    const messageDiv = document.querySelector(`.message[data-msg-id="${msgId}"]`);
+    if (messageDiv) {
+        messageDiv.remove();
+    }
+});
+
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("deleteBtn")) {
         const messageDiv = e.target.closest(".message");
         const msgId = messageDiv.dataset.msgId;
 
+        if (!msgId) {
+            console.error("Message ID is undefined.");
+            return;
+        }
+
+      
         socket.emit("deleteMessage", { msgId });
-
-       
-        messageDiv.remove();
-    }
-});
-
-socket.on("deleteMessage", (msgId) => {
-    const messageDiv = document.querySelector(`.message[data-msg-id="${msgId}"]`);
-    if (messageDiv) {
-        messageDiv.remove();
     }
 });

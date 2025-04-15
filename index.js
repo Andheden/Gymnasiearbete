@@ -44,7 +44,10 @@ io.on("connection", (socket) => {
         socket.join(room);
         console.log(`User joined room: ${room}`);
         socket.emit("message", { user: "System", msg: `You have joined ${room}` });
-        socket.to(room).emit("message", { user: "System", msg: `${socket.request.session.user} has joined the room` });
+    
+        
+        const username = socket.request.session.user ? socket.request.session.user.username : "Unknown User";
+        socket.to(room).emit("message", { user: "System", msg: `${username} has joined the room` });
     });
 
 
@@ -55,20 +58,20 @@ io.on("connection", (socket) => {
             return socket.emit("message", { user: "System", msg: "You must log in to send messages." });
         }
     
-        const username = user.username; // Extract the username
-        const userId = user.id; // Extract the user ID
+        const username = user.username;
+        const userId = socket.id; 
     
-        let msgId = Date.now();
+        let msgId = Date.now(); 
         const messageData = {
             user: username,
-            userId: userId, // Add the user ID to the message data
+            userId: userId,
             msg,
             msgId,
             room,
-            timestamp: new Date().toISOString(),
         };
     
-        io.to(room).emit("message", { user: username, msg, messageData });
+        
+        io.to(room).emit("message", messageData);
     
         const filePath = path.join(__dirname, "chatHistory.json");
         fs.readFile(filePath, "utf8", (err, data) => {
@@ -89,7 +92,74 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         console.log("A user disconnected");
     });
+
+
+
+
+
+    socket.on("deleteMessage", ({ msgId }) => {
+        if (!msgId) {
+            console.error("Received undefined msgId from client.");
+            return;
+        }
+    
+        const user = socket.request.session.user;
+        if (!user) {
+            console.error("User is not logged in.");
+            return;
+        }
+    
+        const filePath = path.join(__dirname, "chatHistory.json");
+    
+        fs.readFile(filePath, "utf8", (err, data) => {
+            if (err) {
+                console.error("Error reading chat history:", err);
+                return;
+            }
+    
+            let chatHistory = [];
+            if (data) {
+                chatHistory = JSON.parse(data);
+            }
+    
+          
+            const messageIndex = chatHistory.findIndex((message) => message.userId === socket.id);
+            if (messageIndex === -1) {
+                console.log(msgId, socket.id);
+                console.error("Message not found or user is not authorized to delete it.");
+                return;
+            }
+    
+            chatHistory.splice(messageIndex, 1);
+    
+          
+            fs.writeFile(filePath, JSON.stringify(chatHistory, null, 2), (err) => {
+                if (err) {
+                    console.error("Error writing chat history:", err);
+                    return;
+                }
+    
+                console.log(`Message with ID ${msgId} deleted by user ${user.username}.`);
+    
+                
+                io.emit("deleteMessage", msgId);
+            });
+        });
+    });
+
+
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -178,3 +248,4 @@ app.post("/logout", (req, res) => {
         res.redirect("/login");
     });
 });
+
