@@ -57,13 +57,7 @@ function outputMessage(message) {
 }
 
 
-socket.on("deleteMessage", (msgId) => {
-   
-    const messageDiv = document.querySelector(`.message[data-msg-id="${msgId}"]`);
-    if (messageDiv) {
-        messageDiv.remove();
-    }
-});
+
 
 document.addEventListener("click", (e) => {
     if (e.target.classList.contains("deleteBtn")) {
@@ -77,5 +71,13 @@ document.addEventListener("click", (e) => {
 
       
         socket.emit("deleteMessage", { msgId });
+    }
+});
+
+socket.on("deleteMessage", (msgId) => {
+   
+    const messageDiv = document.querySelector(`.message[data-msg-id="${msgId}"]`);
+    if (messageDiv) {
+        messageDiv.remove();
     }
 });
