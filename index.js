@@ -91,6 +91,9 @@ io.on("connection", (socket) => {
 
     socket.on("disconnect", () => {
         console.log("A user disconnected");
+
+        socket.to(room).emit("message", { user: "System", msg: `${username} has left the chat`});
+
     });
 
 
@@ -180,6 +183,9 @@ app.get("/signup", (req, res) => {
 app.get("/login", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "login.html"));
 });
+
+
+
 
 app.post("/login", async (req, res) => {
     try {
